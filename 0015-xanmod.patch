@@ -410,7 +410,6 @@ Signed-off-by: Alexandre Frade <kernel@xanmod.org>
 ---
  Documentation/admin-guide/kernel-parameters.txt | 2 +-
  kernel/rcu/Kconfig                              | 4 ++--
- kernel/rcu/rcutorture.c                         | 2 +-
  kernel/rcu/tree.c                               | 6 +++---
  kernel/rcu/tree_nocb.h                          | 4 ++--
  kernel/rcu/tree_plugin.h                        | 4 ++--
@@ -445,19 +444,6 @@ index 3e079de0f5b4..dde694dff431 100644
  	  cause the rcuo[ps] kthreads to monopolize the CPU for hundreds
  	  of milliseconds or more.  Therefore, when enabling this option,
  	  it is your responsibility to ensure that latency-sensitive
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 807fbf6123a7..893b393dd00c 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -2419,7 +2419,7 @@ static int rcutorture_booster_init(unsigned int cpu)
- 		t = per_cpu(ksoftirqd, cpu);
- 		WARN_ON_ONCE(!t);
- 		sp.sched_priority = 2;
--		sched_setscheduler_nocheck(t, SCHED_FIFO, &sp);
-+		sched_setscheduler_nocheck(t, SCHED_RR, &sp);
- 	}
- 
- 	/* Don't allow time recalculation while creating a new task. */
 diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
 index 28c7031711a3..18a4c714537d 100644
 --- a/kernel/rcu/tree.c
@@ -995,6 +981,3 @@ index 285f66ff7bb4..f38f6595b58d 100755
  
 -echo "${KERNELVERSION}${file_localversion}${config_localversion}${LOCALVERSION}${scm_version}"
 +echo "${KERNELVERSION}${config_localversion}${LOCALVERSION}${scm_version}${file_localversion}"
--- 
-2.43.0
-
