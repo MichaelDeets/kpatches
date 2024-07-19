@@ -1,0 +1,43 @@
+diff --git a/init/Kconfig b/init/Kconfig
+index 9b29886..15b87fe 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1557,7 +1557,6 @@ config BPF
+ menuconfig EXPERT
+ 	bool "Configure standard kernel features (expert users)"
+ 	# Unhide debug options, to make the on-by-default options visible
+-	select DEBUG_KERNEL
+ 	help
+ 	  This option allows certain base kernel options and settings
+ 	  to be disabled or tweaked. This is for specialized
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 459af21..fbb1e85 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -779,7 +779,7 @@ config ARCH_WANTS_THP_SWAP
+ 
+ menuconfig TRANSPARENT_HUGEPAGE
+ 	bool "Transparent Hugepage Support"
+-	depends on HAVE_ARCH_TRANSPARENT_HUGEPAGE && !PREEMPT_RT
++	depends on HAVE_ARCH_TRANSPARENT_HUGEPAGE
+ 	select COMPACTION
+ 	select XARRAY_MULTI
+ 	help
+diff --git a/net/ipv6/Makefile b/net/ipv6/Makefile
+index d283c59df4c1..3840ded8c34a 100644
+--- a/net/ipv6/Makefile
++++ b/net/ipv6/Makefile
+@@ -3,6 +3,13 @@
+ # Makefile for the Linux TCP/IP (INET6) layer.
+ #
+ 
++# temporary workaround for clang/lld-18 with -march/-mtune=znver2
++# clangbuiltlinux issue 1987
++ifeq ($(call test-ge, $(CONFIG_CLANG_VERSION), 180000),y)
++badparms = -march=znver4 -mtune=znver4
++KBUILD_CFLAGS :=	$(filter-out $(badparams), $(KBUILD_CFLAGS))
++endif
++
+ obj-$(CONFIG_IPV6) += ipv6.o
+ 
+ ipv6-y :=	af_inet6.o anycast.o ip6_output.o ip6_input.o addrconf.o \
