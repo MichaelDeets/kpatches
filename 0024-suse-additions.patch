@@ -241,8 +241,3 @@ index 00000000000..39fe7878174
 +automatically. If you don't need to build against other flavors than the
 +ones you've already installed - it is safe to uninstall this package.
 
-From 917d74574856a402e5679d8162407af122c9b8db Mon Sep 17 00:00:00 2001
-From: Etienne JUVIGNY <ti3nou@gmail.com>
-Date: Tue, 12 Sep 2023 03:42:23 +0200
-Subject: Suse: Add kernel-syms package and adapt for /usr/lib usage in Suse instead of the standard /lib symlink.
-
